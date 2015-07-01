@@ -16,32 +16,38 @@ import android.widget.ImageView;
 import java.util.Calendar;
 
 import hugo.weaving.DebugLog;
+import timber.log.Timber;
 
 public class TransientStateHeadsUpService extends Service {
     public static String APP_PACKAGE_NAME = "APP_PACKAGE_NAME";
+    public static String HIDE_HUD = "HIDE_HUD";
 
     private String appPackageName;
     private WindowManager windowManager;
     private ImageView transientStateHead;
     WindowManager.LayoutParams params;
 
+    @DebugLog
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        appPackageName = intent.getStringExtra(APP_PACKAGE_NAME);
-
+        if(intent.getBooleanExtra(HIDE_HUD, false)) {
+            Timber.i("HIDE_HUD");
+            intent.removeExtra(HIDE_HUD);
+            if(transientStateHead != null && windowManager != null) {
+                removeTransientStateHead();
+           }
+        } else {
+            appPackageName = intent.getStringExtra(APP_PACKAGE_NAME);
+            showTransientStateHead();
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        if(transientStateHead == null) {
-            showTransientStateHead();
-        }
-    }
-
     private void showTransientStateHead() {
+        if(transientStateHead != null) {
+            return;
+        }
+
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
         transientStateHead = new ImageView(this);
@@ -100,15 +106,19 @@ public class TransientStateHeadsUpService extends Service {
         windowManager.addView(transientStateHead, params);
     }
 
+    private void removeTransientStateHead() {
+        try {
+            windowManager.removeView(transientStateHead);
+        } catch(IllegalArgumentException e) {
+            e.printStackTrace();
+        } finally {
+            transientStateHead = null;
+        }
+    }
+
     @DebugLog
     private void onTransientStateHeadClicked() {
         if(appPackageName != null) {
-            // Remove view
-            if(transientStateHead != null) {
-                windowManager.removeView(transientStateHead);
-                transientStateHead = null;
-            }
-
             startLauncherApp();
             restartPackageProcess();
        }
@@ -150,22 +160,19 @@ public class TransientStateHeadsUpService extends Service {
                         intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
 
-                        if(transientStateHead == null) {
-                            showTransientStateHead();
-                        }
+                        showTransientStateHead();
                     }
                 }, 1000);
             }
         }, 2000);
     }
 
+    @DebugLog
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (transientStateHead != null)
-            windowManager.removeView(transientStateHead);
-            transientStateHead = null;
-    }
+        removeTransientStateHead();
+   }
 
     @Override
     public IBinder onBind(Intent intent) {

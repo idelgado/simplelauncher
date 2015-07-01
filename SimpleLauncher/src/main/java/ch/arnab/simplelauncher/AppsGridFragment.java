@@ -36,11 +36,13 @@ public class AppsGridFragment extends GridFragment implements LoaderManager.Load
 
     @DebugLog
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
 
-        // Do not show the service when the home screen is visible
-        getActivity().stopService(new Intent(getActivity().getApplication(), TransientStateHeadsUpService.class));
+        // Notify service to hide heads up display
+        Intent serviceIntent = new Intent(getActivity().getApplication(), TransientStateHeadsUpService.class);
+        serviceIntent.putExtra(TransientStateHeadsUpService.HIDE_HUD, true);
+        getActivity().startService(serviceIntent);
     }
 
     @Override
@@ -74,7 +76,7 @@ public class AppsGridFragment extends GridFragment implements LoaderManager.Load
                 startActivity(intent);
 
                 // Start the transient state heads up service
-                Intent serviceIntent = new Intent(getActivity().getApplication(), TransientStateHeadsUpService.class);
+                Intent serviceIntent = new Intent(getActivity(), TransientStateHeadsUpService.class);
                 serviceIntent.putExtra(TransientStateHeadsUpService.APP_PACKAGE_NAME, app.getApplicationPackageName());
 
                 getActivity().startService(serviceIntent);
