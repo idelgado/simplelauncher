@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import java.util.Calendar;
 
 import hugo.weaving.DebugLog;
-import timber.log.Timber;
 
 public class TransientStateHeadsUpService extends Service {
     public static String APP_PACKAGE_NAME = "APP_PACKAGE_NAME";
@@ -37,7 +36,7 @@ public class TransientStateHeadsUpService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        if(transientStateHead != null) {
+        if(transientStateHead == null) {
             showTransientStateHead();
         }
     }
@@ -52,9 +51,7 @@ public class TransientStateHeadsUpService extends Service {
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_PHONE,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS |
-                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
         // Position the view on the top right side of the screen
@@ -106,7 +103,12 @@ public class TransientStateHeadsUpService extends Service {
     @DebugLog
     private void onTransientStateHeadClicked() {
         if(appPackageName != null) {
-            Timber.i(appPackageName);
+            // Remove view
+            if(transientStateHead != null) {
+                windowManager.removeView(transientStateHead);
+                transientStateHead = null;
+            }
+
             startLauncherApp();
             restartPackageProcess();
        }
@@ -148,7 +150,7 @@ public class TransientStateHeadsUpService extends Service {
                         intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
 
-                        if(transientStateHead != null) {
+                        if(transientStateHead == null) {
                             showTransientStateHead();
                         }
                     }
@@ -162,6 +164,7 @@ public class TransientStateHeadsUpService extends Service {
         super.onDestroy();
         if (transientStateHead != null)
             windowManager.removeView(transientStateHead);
+            transientStateHead = null;
     }
 
     @Override
