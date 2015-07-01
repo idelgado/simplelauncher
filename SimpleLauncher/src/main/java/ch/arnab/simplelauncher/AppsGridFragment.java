@@ -9,6 +9,8 @@ import android.widget.GridView;
 
 import java.util.ArrayList;
 
+import hugo.weaving.DebugLog;
+
 /**
  * Created by Arnab Chakraborty
  */
@@ -30,6 +32,15 @@ public class AppsGridFragment extends GridFragment implements LoaderManager.Load
 
         // create the loader to load the apps list in background
         getLoaderManager().initLoader(0, null, this);
+    }
+
+    @DebugLog
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Do not show the service when the home screen is visible
+        getActivity().stopService(new Intent(getActivity().getApplication(), TransientHeadsUpService.class));
     }
 
     @Override
@@ -61,7 +72,11 @@ public class AppsGridFragment extends GridFragment implements LoaderManager.Load
 
             if (intent != null) {
                 startActivity(intent);
+
+                // Start system overlay when an activity is launched
+                getActivity().startService(new Intent(getActivity().getApplication(), TransientHeadsUpService.class));
             }
         }
     }
+
 }

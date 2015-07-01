@@ -1,8 +1,11 @@
 package ch.arnab.simplelauncher;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
+
+import hugo.weaving.DebugLog;
 
 public class HomeScreen extends FragmentActivity {
 
@@ -19,4 +22,6 @@ public class HomeScreen extends FragmentActivity {
         getMenuInflater().inflate(R.menu.home_screen, menu);
         return true;
     }
+
+
 }
