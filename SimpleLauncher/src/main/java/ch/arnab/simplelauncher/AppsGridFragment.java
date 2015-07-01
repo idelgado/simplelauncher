@@ -40,7 +40,7 @@ public class AppsGridFragment extends GridFragment implements LoaderManager.Load
         super.onResume();
 
         // Do not show the service when the home screen is visible
-        getActivity().stopService(new Intent(getActivity().getApplication(), TransientHeadsUpService.class));
+        getActivity().stopService(new Intent(getActivity().getApplication(), TransientStateHeadsUpService.class));
     }
 
     @Override
@@ -73,8 +73,11 @@ public class AppsGridFragment extends GridFragment implements LoaderManager.Load
             if (intent != null) {
                 startActivity(intent);
 
-                // Start system overlay when an activity is launched
-                getActivity().startService(new Intent(getActivity().getApplication(), TransientHeadsUpService.class));
+                // Start the transient state heads up service
+                Intent serviceIntent = new Intent(getActivity().getApplication(), TransientStateHeadsUpService.class);
+                serviceIntent.putExtra(TransientStateHeadsUpService.APP_PACKAGE_NAME, app.getApplicationPackageName());
+
+                getActivity().startService(serviceIntent);
             }
         }
     }

@@ -4,8 +4,8 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <!-- Allow system window overlays -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
 
     <application
         android:name=".LauncherApplication"
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".TransientHeadsUpService" />
+        <service android:name=".TransientStateHeadsUpService" />
 
     </application>
 </manifest>
