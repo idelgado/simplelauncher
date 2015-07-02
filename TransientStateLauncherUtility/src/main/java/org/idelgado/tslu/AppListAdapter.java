@@ -1,4 +1,4 @@
-package ch.arnab.simplelauncher;
+package org.idelgado.tslu;
 
 import android.annotation.TargetApi;
 import android.content.Context;

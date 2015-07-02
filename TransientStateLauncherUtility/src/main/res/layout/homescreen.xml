@@ -11,7 +11,7 @@
     <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="ch.arnab.simplelauncher.AppsGridFragment"
+            android:name="org.idelgado.tslu.AppsGridFragment"
             android:id="@+id/apps_grid" />
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package ch.arnab.simplelauncher;
+package org.idelgado.tslu;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;

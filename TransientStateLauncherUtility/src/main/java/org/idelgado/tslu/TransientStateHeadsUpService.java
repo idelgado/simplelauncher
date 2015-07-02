@@ -1,4 +1,4 @@
-package ch.arnab.simplelauncher;
+package org.idelgado.tslu;
 
 import android.app.Activity;
 import android.app.ActivityManager;

@@ -1,11 +1,9 @@
-package ch.arnab.simplelauncher;
+package org.idelgado.tslu;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 
-import hugo.weaving.DebugLog;
 
 public class HomeScreen extends FragmentActivity {
 

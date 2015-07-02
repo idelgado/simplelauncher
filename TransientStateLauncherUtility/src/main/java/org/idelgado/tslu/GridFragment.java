@@ -1,4 +1,4 @@
-package ch.arnab.simplelauncher;
+package org.idelgado.tslu;
 
 /*
  * Created by Thomas Barrasso on 9/11/12.
