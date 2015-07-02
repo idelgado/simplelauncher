@@ -36,5 +36,9 @@ which app was last launched and use that information later to destroy the proces
 
 *Are there other ways to test for transient state bugs?*
 
-Yes, if your device is rooted you can put the application in the background, manually kill the process via adb ``` adb shell pkill your.package.name ````, and then re-launch the application. This should produce the same behavior as described above.
+Yes, if your device is rooted you can put the application in the background, manually kill the process via adb ``` adb shell pkill your.package.name ```, and then re-launch the application. This should produce the same behavior as described above.
 
+
+## Credits
+
+The original launcher app was forked from [simplelauncher](https://github.com/arnabc/simplelauncher) and modified to implement the transient state utility.
