@@ -2,7 +2,7 @@
 
 This Android launcher application provides a repeatable mechanism to test Android application for transient state bugs.
 
-Set the launcher application as your default Home app. Launch the application of interested and tap on the icon overlay to test for
+Set the launcher application as your default Home app. Launch the application of interest and tap on the icon overlay to test for
 transient state bugs.
 
 ## Background
@@ -32,7 +32,7 @@ This application provides a repeatable method that destroys the process of the s
 
 ## FAQ
 
-*Why is this a Launcher app?*
+*Why is this a launcher app?*
 
 Prior to Lollipop, it was possible to determine the last active application by querying getRunningTasks. Unfortunately, this mechanism is now deprecated
 and there are no reliable api mechanisms to determine which package was last launched. By using a launcher app it is possible to track
