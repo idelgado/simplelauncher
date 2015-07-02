@@ -9,10 +9,9 @@ is destroyed by the operating system due to "extreme memory pressure". In produc
 individual activities or the entire application process to be destroyed leading to a higher prevelance of transient state scenarios.
 
 The major challenge with testing transient state is that there is no simple mechanism to reliably and repeatably test for transient state bugs. The
-most common reccomendation is to invoke screen orientation changes with an emulator or to use Don't keep activities from the developer options. Both of
+most common recommendation is to invoke screen orientation changes with an emulator or to use Don't keep activities from the developer options. Both of
 these mechanisms fall short of providing true transient state testing. In both cases, these options only test the transient state of the Activity. This
-does not destroy the entire transient state of the application. Android applications often have Singleton or Application fields that maintain state
-and are retrieved or injected within the context of an Activity.
+does not destroy the entire transient state of the application. 
 
 ## How It Works
 This application uses a repeatable procedure to destroy the selected application process and re-launch the application to test for transient state bugs.
@@ -26,4 +25,16 @@ This application uses a repeatable procedure to destroy the selected application
   3. Re-launch the application after a few seconds
   4. See if this results in unexpected behavior or an application crash.
 5. Repeat steps 3-4 as necessary.
+
+## FAQ
+
+*Why did you decide to use a Launcher app?*
+
+Prior to Lollipop, it was possible to determine the last active application by querying getRunningTasks. Unfortunately, this mechanism is now deprecated
+and there are no reliable api mechanisms to determine which package was last launched. Alternatively, by writing the Launcher app it is possible to track
+which app was last launched and use that information later to destroy the process and re-launch the application.
+
+*Are there other ways to test for transient state bugs?*
+
+Yes, if your device is rooted you can put the application in the background, manually kill the process via adb ``` adb shell pkill your.package.name ````, and then re-launch the application. This should produce the same behavior as described above.
 
