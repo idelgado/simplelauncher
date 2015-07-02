@@ -5,8 +5,10 @@ import android.app.ActivityManager;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.os.Handler;
 import android.os.IBinder;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -61,9 +63,15 @@ public class TransientStateHeadsUpService extends Service {
                 PixelFormat.TRANSLUCENT);
 
         // Position the view on the top right side of the screen
-        params.gravity = Gravity.TOP | Gravity.RIGHT;
+        params.gravity = Gravity.TOP | Gravity.LEFT;
+
+        // Set the view in the left middle part of the screen
+        Display display = windowManager.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int height = size.y;
         params.x = 0;
-        params.y = 200;
+        params.y = height/2;
 
         transientStateHead.setOnTouchListener(new View.OnTouchListener() {
             private int initialX;
