@@ -2,19 +2,23 @@
 
 This Android launcher application provides a repeatable mechanism to test Android application for transient state bugs.
 
+Set the launcher application as your default Home app. Launch the application of interested and tap on the icon overlay to test for
+transient state bugs.
+
 ## Background
-Transient state bugs are seldomly encountered during development but often appear in production. Transient state can occur for several reasons,
-a configuration change occurs(screen orietnation, locale, etc.), the Activity is destroyed by Android due to inactivity, or the application process
+
+Transient state bugs are rarely encountered during development but often appear in production. Transient state can occur for several reasons,
+a configuration change occurs(screen orientation, locale, etc.), the Activity is destroyed by Android due to inactivity, or the application process
 is destroyed by the operating system due to "extreme memory pressure". In production environments users typically run numerous apps causing
 individual activities or the entire application process to be destroyed leading to a higher prevelance of transient state scenarios.
 
 The major challenge with testing transient state is that there is no simple mechanism to reliably and repeatably test for transient state bugs. The
-most common recommendation is to invoke screen orientation changes with an emulator or to use Don't keep activities from the developer options. Both of
-these mechanisms fall short of providing true transient state testing. In both cases, these options only test the transient state of the Activity. This
-does not destroy the entire transient state of the application. 
+most common recommendation is to invoke screen orientation changes with an emulator or to use Don't keep Activities from the developer options. Both of
+these mechanisms fall short of providing true transient state testing because they only destroy the Activity and do not destroy the entire Application process.
 
 ## How It Works
-This application uses a repeatable procedure to destroy the selected application process and re-launch the application to test for transient state bugs.
+
+This application provides a repeatable method that destroys the process of the selected application and re-launches the application to allow the developer to check for transient state bugs.
 
 1. Use the Transient State Launcher Utility as the default Home application.
 2. Launch the application under test.
@@ -28,15 +32,15 @@ This application uses a repeatable procedure to destroy the selected application
 
 ## FAQ
 
-*Why did you decide to use a Launcher app?*
+*Why is this a Launcher app?*
 
 Prior to Lollipop, it was possible to determine the last active application by querying getRunningTasks. Unfortunately, this mechanism is now deprecated
-and there are no reliable api mechanisms to determine which package was last launched. Alternatively, by writing the Launcher app it is possible to track
-which app was last launched and use that information later to destroy the process and re-launch the application.
+and there are no reliable api mechanisms to determine which package was last launched. By using a launcher app it is possible to track
+which app was last launched and use this information later to destroy the application process and re-launch the application.
 
 *Are there other ways to test for transient state bugs?*
 
-Yes, if your device is rooted you can put the application in the background, manually kill the process via adb ``` adb shell pkill your.package.name ```, and then re-launch the application. This should produce the same behavior as described above.
+Yes, if your device is rooted you can put the application in the background, manually kill the process via adb ``` adb shell pkill your.package.name ```, and then re-launch the application. This results in the same behavior.
 
 
 ## Credits
