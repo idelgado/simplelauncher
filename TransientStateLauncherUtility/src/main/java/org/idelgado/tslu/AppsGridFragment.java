@@ -70,17 +70,8 @@ public class AppsGridFragment extends GridFragment implements LoaderManager.Load
     public void onGridItemClick(GridView g, View v, int position, long id) {
         AppModel app = (AppModel) getGridAdapter().getItem(position);
         if (app != null) {
-            Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage(app.getApplicationPackageName());
-
-            if (intent != null) {
-                startActivity(intent);
-
-                // Start the transient state heads up service
-                Intent serviceIntent = new Intent(getActivity(), TransientStateHeadsUpService.class);
-                serviceIntent.putExtra(TransientStateHeadsUpService.APP_PACKAGE_NAME, app.getApplicationPackageName());
-
-                getActivity().startService(serviceIntent);
-            }
+            HomeScreen homeScreen = (HomeScreen)getActivity();
+            homeScreen.startApplication(app.getApplicationPackageName());
         }
     }
 

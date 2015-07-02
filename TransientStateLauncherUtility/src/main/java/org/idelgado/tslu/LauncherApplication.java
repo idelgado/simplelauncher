@@ -6,6 +6,8 @@ import timber.log.Timber;
 
 public class LauncherApplication extends Application {
 
+	private HomeScreen homeScreen;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -16,4 +18,11 @@ public class LauncherApplication extends Application {
 		}
 	}
 
+	public void setHomeScreen(HomeScreen homeScreen) {
+		this.homeScreen = homeScreen;
+	}
+
+	public HomeScreen getHomeScreen() {
+		return homeScreen;
+	}
 }

@@ -17,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -200,12 +201,18 @@ public class TransientStateHeadsUpService extends Service {
                 startAppHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        // Start the application again
-                        Intent intent = TransientStateHeadsUpService.this.getApplicationContext().getPackageManager().getLaunchIntentForPackage(appPackageName);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-
-                        showTransientStateHead();
+                        /* Start the application from the context of the activity to avoid
+                         * having to call it from the service since it requires the
+                         * Intent.FLAG_ACTIVITY_NEW_TASK flag. This flag causes some apps to create
+                         * a new activity stack on some device/api levels.
+                         */
+                        LauncherApplication launcherApplication = (LauncherApplication)getApplication();
+                        HomeScreen homeScreen = launcherApplication.getHomeScreen();
+                        if(homeScreen != null) {
+                            homeScreen.startApplication(appPackageName);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Unable to relaunch " + appPackageName, Toast.LENGTH_LONG).show();
+                        }
                     }
                 }, 1000);
             }
