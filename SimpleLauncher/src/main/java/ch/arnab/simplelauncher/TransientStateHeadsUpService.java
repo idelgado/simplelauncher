@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.view.Display;
@@ -24,9 +27,11 @@ public class TransientStateHeadsUpService extends Service {
     public static String APP_PACKAGE_NAME = "APP_PACKAGE_NAME";
     public static String HIDE_HUD = "HIDE_HUD";
 
+    public static final String SHARED_PREFS = "transient_state_heads_up_location";
+
     private String appPackageName;
     private WindowManager windowManager;
-    private ImageView transientStateHead;
+    private ImageView transientStateHeadView;
     WindowManager.LayoutParams params;
 
     @DebugLog
@@ -35,7 +40,7 @@ public class TransientStateHeadsUpService extends Service {
         if(intent.getBooleanExtra(HIDE_HUD, false)) {
             Timber.i("HIDE_HUD");
             intent.removeExtra(HIDE_HUD);
-            if(transientStateHead != null && windowManager != null) {
+            if(transientStateHeadView != null && windowManager != null) {
                 removeTransientStateHead();
            }
         } else {
@@ -46,14 +51,15 @@ public class TransientStateHeadsUpService extends Service {
     }
 
     private void showTransientStateHead() {
-        if(transientStateHead != null) {
+        if(transientStateHeadView != null) {
+            showIcon();
             return;
         }
 
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-        transientStateHead = new ImageView(this);
-        transientStateHead.setImageResource(R.drawable.ic_launcher);
+        transientStateHeadView = new ImageView(this);
+        showIcon();
 
         params= new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -62,18 +68,32 @@ public class TransientStateHeadsUpService extends Service {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
-        // Position the view on the top right side of the screen
-        params.gravity = Gravity.TOP | Gravity.LEFT;
 
-        // Set the view in the left middle part of the screen
-        Display display = windowManager.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int height = size.y;
-        params.x = 0;
-        params.y = height/2;
+        // Check for last known location
+        SharedPreferences prefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        int x = prefs.getInt("x", -1);
+        int y = prefs.getInt("y", -1);
 
-        transientStateHead.setOnTouchListener(new View.OnTouchListener() {
+        if(x != -1 && y != -1) {
+            // Position the view on the top right side of the screen
+            params.gravity = Gravity.TOP | Gravity.LEFT;
+
+            params.x = x;
+            params.y = y;
+        } else {
+            // Position the view on the top right side of the screen
+            params.gravity = Gravity.TOP | Gravity.LEFT;
+
+            // Set the view in the left middle part of the screen
+            Display display = windowManager.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            int height = size.y;
+            params.x = 0;
+            params.y = height/2;
+        }
+
+        transientStateHeadView.setOnTouchListener(new View.OnTouchListener() {
             private int initialX;
             private int initialY;
             private float initialTouchX;
@@ -104,23 +124,40 @@ public class TransientStateHeadsUpService extends Service {
                                 + (int) (event.getRawX() - initialTouchX);
                         params.y = initialY
                                 + (int) (event.getRawY() - initialTouchY);
-                        windowManager.updateViewLayout(transientStateHead, params);
+
+                        // Save the last location
+                        SharedPreferences.Editor editor = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).edit();
+                        editor.putInt("x", params.x);
+                        editor.putInt("y", params.y);
+                        editor.apply();
+                        windowManager.updateViewLayout(transientStateHeadView, params);
                         return true;
                 }
                 return false;
             }
         });
 
-        windowManager.addView(transientStateHead, params);
+        windowManager.addView(transientStateHeadView, params);
+    }
+
+    private void showIcon() {
+        if(appPackageName != null) {
+            try {
+                Drawable icon = getApplication().getPackageManager().getApplicationIcon(appPackageName);
+                transientStateHeadView.setImageDrawable(icon);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void removeTransientStateHead() {
         try {
-            windowManager.removeView(transientStateHead);
+            windowManager.removeView(transientStateHeadView);
         } catch(IllegalArgumentException e) {
             e.printStackTrace();
         } finally {
-            transientStateHead = null;
+            transientStateHeadView = null;
         }
     }
 
