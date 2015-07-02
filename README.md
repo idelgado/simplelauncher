@@ -5,6 +5,10 @@ This Android launcher application provides a repeatable mechanism to test Androi
 Set the launcher application as your default Home app. Launch the application of interest and tap on the icon overlay to test for
 transient state bugs.
 
+## Demo Video
+
+[![Transient State Launcher Utility Demo](http://img.youtube.com/vi/hAPNWsuI3Mo/0.jpg)](https://youtu.be/hAPNWsuI3Mo)
+
 ## Background
 
 Transient state bugs are rarely encountered during development but often appear in production. Transient state can occur for several reasons,
