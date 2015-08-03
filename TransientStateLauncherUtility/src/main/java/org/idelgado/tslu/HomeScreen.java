@@ -1,9 +1,12 @@
 package org.idelgado.tslu;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 
 
 public class HomeScreen extends FragmentActivity {
@@ -14,8 +17,16 @@ public class HomeScreen extends FragmentActivity {
         setContentView(R.layout.homescreen);
 
         ((LauncherApplication)getApplication()).setHomeScreen(this);
+        Button uninstallButton = (Button)findViewById(R.id.uninstall_button);
+        uninstallButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri packageURI = Uri.parse("package:" + getPackageName());
+                Intent uninstallIntent = new Intent(Intent.ACTION_DELETE, packageURI);
+                startActivity(uninstallIntent);
+            }
+        });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

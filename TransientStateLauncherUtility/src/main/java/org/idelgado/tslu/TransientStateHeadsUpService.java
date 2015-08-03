@@ -69,7 +69,6 @@ public class TransientStateHeadsUpService extends Service {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
-
         // Check for last known location
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         int x = prefs.getInt("x", -1);
