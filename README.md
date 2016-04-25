@@ -28,9 +28,7 @@ When an app is started from the TSTU launcher app, the package name of the app i
 
 *Why is this a launcher app?*
 
-Prior to Lollipop, it was possible to determine the last active application by querying getRunningTasks. Unfortunately, this mechanism is now deprecated
-and there are no reliable api mechanisms to determine which package was last launched. By using a launcher app it is possible to track
-which app was last launched and use this information later to destroy the application process and re-launch the application.
+Prior to Lollipop, it was possible to determine the last active application by querying getRunningTasks. Unfortunately, this mechanism is now deprecated. By using a launcher app it is possible to track which app was last launched, which is used to later destroy the application process and re-launch the application.
 
 *Are there other ways to test for transient state bugs?*
 
