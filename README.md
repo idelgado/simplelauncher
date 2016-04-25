@@ -1,38 +1,28 @@
-# Transient State Launcher Utility
+# Transient State Testing Utility
 
-This Android launcher application provides a repeatable mechanism to test Android application for transient state bugs.
+This launcher application provides a simple repeatable way of testing for transient state bugs in your Android app.
 
-Set the launcher application as your default Home app. Launch the application of interest and tap on the icon overlay to test for
-transient state bugs.
+## How To
 
-## Demo Video
-
-[![Transient State Launcher Utility Demo](http://img.youtube.com/vi/hAPNWsuI3Mo/0.jpg)](https://youtu.be/hAPNWsuI3Mo)
+1. Set the launcher application as your default Home app
+2. Launch the app you want to test for transient state bugs
+3. Navigate to an Activity you want to test
+4. Tap the overlay icon that appears on the screen and wait several seconds for it to re-appear
+5. If your app crashes or if the state of your Activity is not restored correctly you have a transient state bug!
 
 ## Background
 
-Transient state bugs are rarely encountered during development but often appear in production. Transient state can occur for several reasons,
-a configuration change occurs(screen orientation, locale, etc.), the Activity is destroyed by Android due to inactivity, or the application process
-is destroyed by the operating system due to "extreme memory pressure". In production environments users typically run numerous apps causing
-individual activities or the entire application process to be destroyed leading to a higher prevelance of transient state scenarios.
+Transient state bugs are rarely encountered during development but often appear in production. Transient state loss can occur for several reasons:
 
-The major challenge with testing transient state is that there is no simple mechanism to reliably and repeatably test for transient state bugs. The
-most common recommendation is to invoke screen orientation changes with an emulator or to use Don't keep Activities from the developer options. Both of
-these mechanisms fall short of providing true transient state testing because they only destroy the Activity and do not destroy the entire Application process.
+1. A configuration change occurs as a result of a screen orientation change, locale change, etc.
+2. The Activity is destroyed. This is equivalent to setting `Don't keep activities` in developer options.
+3. The application process is killed due to inactivity.
+
+The challenge of testing transient state loss is that there are no simple repeatable ways to test it without jumping through a few hoops. The most common recommendation is to invoke screen orientation changes with an emulator or to use Don't keep Activities from the developer options. Both of these options fall short of providing complete transient state testing coverage because they only destroy the Activity and do not destroy the entire Application process which can happen during inactivity.
 
 ## How It Works
 
-This application provides a repeatable method that destroys the process of the selected application and re-launches the application to allow the developer to check for transient state bugs.
-
-1. Use the Transient State Launcher Utility as the default Home application.
-2. Launch the application under test.
-3. Navigate through the application to arrive at the transient state you are interested in testing.
-4. Tap on the heads up display window overlay to start the following automated procedure.
-  1. The application is placed into the background by re-launching the default Home application
-  2. The launcher application tracks which package was last launched. It destroys the application corresponding to this package by calling ``` ActivityManager.killBackgroundProcesses(String packageName) ```
-  3. Re-launch the application after a few seconds
-  4. See if this results in unexpected behavior or an application crash.
-5. Repeat steps 3-4 as necessary.
+When an app is started from the TSTU launcher app, the package name of the app is recorded. Whenever the overlay icon is pressed once inside the app, the app is placed in the background allowing the laucher app to call ```ActivityManager.killBackgroundProcesses(String appPackageName)```. This kills the app process entirely. After a few seconds, the app is re-launched. Since the ```Recents Activity``` is still present, the app will attempt to restore its state. This allows you to test for transient state bugs.
 
 ## FAQ
 
@@ -44,7 +34,7 @@ which app was last launched and use this information later to destroy the applic
 
 *Are there other ways to test for transient state bugs?*
 
-Yes, if your device is rooted you can put the application in the background, manually kill the process via adb ``` adb shell pkill your.package.name ```, and then re-launch the application. This results in the same behavior.
+Yes, if your device is rooted you can put the application in the background, manually kill the process via adb ``` adb shell pkill your.package.name ```, and then re-launch the application. This is the same behavior provided by this launcher utility.
 
 
 ## Credits
