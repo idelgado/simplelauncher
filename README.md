@@ -2,7 +2,7 @@
 
 This launcher application provides a simple repeatable way of testing for transient state bugs in your Android app.
 
-## How To
+## How-To
 
 1. Set the launcher application as your default Home app
 2. Launch the app you want to test for transient state bugs
