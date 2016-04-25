@@ -1,6 +1,9 @@
 package org.idelgado.tstu.activity;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -21,6 +24,7 @@ public class HomeScreenActivity extends FragmentActivity {
         setContentView(R.layout.home_screen);
 
         ((LauncherApplication)getApplication()).setHomeScreenActivity(this);
+
         Button uninstallButton = (Button)findViewById(R.id.uninstall_button);
         uninstallButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,6 +34,9 @@ public class HomeScreenActivity extends FragmentActivity {
                 startActivity(uninstallIntent);
             }
         });
+
+        // Show the Launcher selection intent if it is not already the default
+        launchAppChooser();
     }
 
     @Override
@@ -55,6 +62,13 @@ public class HomeScreenActivity extends FragmentActivity {
 
             startService(serviceIntent);
         }
+    }
+
+    private void launchAppChooser() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 }

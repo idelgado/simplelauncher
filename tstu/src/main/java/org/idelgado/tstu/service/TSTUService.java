@@ -41,6 +41,10 @@ public class TSTUService extends Service {
     @DebugLog
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if(intent == null) {
+            return super.onStartCommand(intent, flags, startId);
+        }
+
         if(intent.getBooleanExtra(HIDE_HUD, false)) {
             Timber.i("HIDE_HUD");
             intent.removeExtra(HIDE_HUD);
@@ -49,7 +53,9 @@ public class TSTUService extends Service {
            }
         } else {
             appPackageName = intent.getStringExtra(APP_PACKAGE_NAME);
-            showTransientStateHead();
+            if(!appPackageName.equals(getPackageName())) {
+                showTransientStateHead();
+            }
         }
         return super.onStartCommand(intent, flags, startId);
     }
