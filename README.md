@@ -4,6 +4,8 @@ This launcher application provides a simple repeatable way of testing for transi
 
 ## How-To
 
+TODO: Add screenshots of sample app
+
 1. Set the launcher application as your default Home app
 2. Launch the app you want to test for transient state bugs
 3. Navigate to an Activity you want to test
