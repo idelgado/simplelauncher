@@ -1,4 +1,4 @@
-package org.idelgado.tslu;
+package org.idelgado.tstu.service;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -19,12 +19,15 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.idelgado.tstu.LauncherApplication;
+import org.idelgado.tstu.activity.HomeScreenActivity;
+
 import java.util.Calendar;
 
 import hugo.weaving.DebugLog;
 import timber.log.Timber;
 
-public class TransientStateHeadsUpService extends Service {
+public class TSTUService extends Service {
     public static String APP_PACKAGE_NAME = "APP_PACKAGE_NAME";
     public static String HIDE_HUD = "HIDE_HUD";
 
@@ -192,7 +195,7 @@ public class TransientStateHeadsUpService extends Service {
                 // Destroy the application process
                 final Handler startAppHandler = new Handler();
                 ActivityManager am = (ActivityManager)
-                        TransientStateHeadsUpService.this.getApplicationContext().getSystemService(Activity.ACTIVITY_SERVICE);
+                        TSTUService.this.getApplicationContext().getSystemService(Activity.ACTIVITY_SERVICE);
 
                 am.killBackgroundProcesses(appPackageName);
 
@@ -206,9 +209,9 @@ public class TransientStateHeadsUpService extends Service {
                          * a new activity stack on some device/api levels.
                          */
                         LauncherApplication launcherApplication = (LauncherApplication)getApplication();
-                        HomeScreen homeScreen = launcherApplication.getHomeScreen();
-                        if(homeScreen != null) {
-                            homeScreen.startApplication(appPackageName);
+                        HomeScreenActivity homeScreenActivity = launcherApplication.getHomeScreenActivity();
+                        if(homeScreenActivity != null) {
+                            homeScreenActivity.startApplication(appPackageName);
                         } else {
                             Toast.makeText(getApplicationContext(), "Unable to relaunch " + appPackageName, Toast.LENGTH_LONG).show();
                         }
@@ -227,7 +230,6 @@ public class TransientStateHeadsUpService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO Auto-generated method stub
         return null;
     }
 }

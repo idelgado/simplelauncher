@@ -1,4 +1,4 @@
-package org.idelgado.tslu;
+package org.idelgado.tstu.fragment;
 
 /*
  * Created by Thomas Barrasso on 9/11/12.

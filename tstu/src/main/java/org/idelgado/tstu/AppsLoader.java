@@ -1,9 +1,12 @@
-package org.idelgado.tslu;
+package org.idelgado.tstu;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.v4.content.AsyncTaskLoader;
+
+import org.idelgado.tstu.model.AppModel;
+import org.idelgado.tstu.receiver.PackageIntentReceiver;
 
 import java.text.Collator;
 import java.util.ArrayList;

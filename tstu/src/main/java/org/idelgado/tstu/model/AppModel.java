@@ -1,4 +1,4 @@
-package org.idelgado.tslu;
+package org.idelgado.tstu.model;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -62,8 +62,7 @@ public class AppModel {
         return mContext.getResources().getDrawable(android.R.drawable.sym_def_app_icon);
     }
 
-
-    void loadLabel(Context context) {
+    public void loadLabel(Context context) {
         if (mAppLabel == null || !mMounted) {
             if (!mApkFile.exists()) {
                 mMounted = false;

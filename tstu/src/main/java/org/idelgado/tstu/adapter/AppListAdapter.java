@@ -1,4 +1,4 @@
-package org.idelgado.tslu;
+package org.idelgado.tstu.adapter;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.idelgado.tstu.model.AppModel;
+import org.idelgado.tstu.R;
 
 import java.util.ArrayList;
 import java.util.Collection;

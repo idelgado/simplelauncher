@@ -1,4 +1,4 @@
-package org.idelgado.tslu;
+package org.idelgado.tstu.activity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -8,15 +8,19 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
+import org.idelgado.tstu.LauncherApplication;
+import org.idelgado.tstu.R;
+import org.idelgado.tstu.service.TSTUService;
 
-public class HomeScreen extends FragmentActivity {
+
+public class HomeScreenActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.homescreen);
+        setContentView(R.layout.home_screen);
 
-        ((LauncherApplication)getApplication()).setHomeScreen(this);
+        ((LauncherApplication)getApplication()).setHomeScreenActivity(this);
         Button uninstallButton = (Button)findViewById(R.id.uninstall_button);
         uninstallButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,8 +50,8 @@ public class HomeScreen extends FragmentActivity {
             startActivity(intent);
 
             // Start the transient state heads up service
-            Intent serviceIntent = new Intent(this, TransientStateHeadsUpService.class);
-            serviceIntent.putExtra(TransientStateHeadsUpService.APP_PACKAGE_NAME, packageName);
+            Intent serviceIntent = new Intent(this, TSTUService.class);
+            serviceIntent.putExtra(TSTUService.APP_PACKAGE_NAME, packageName);
 
             startService(serviceIntent);
         }

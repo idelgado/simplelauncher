@@ -1,9 +1,11 @@
-package org.idelgado.tslu;
+package org.idelgado.tstu.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
+import org.idelgado.tstu.AppsLoader;
 
 /**
  * Helper class to look for interesting changes to the installed apps

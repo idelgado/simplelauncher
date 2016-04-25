@@ -1,4 +1,4 @@
-package org.idelgado.tslu;
+package org.idelgado.tstu.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,12 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.GridView;
+
+import org.idelgado.tstu.AppsLoader;
+import org.idelgado.tstu.service.TSTUService;
+import org.idelgado.tstu.activity.HomeScreenActivity;
+import org.idelgado.tstu.adapter.AppListAdapter;
+import org.idelgado.tstu.model.AppModel;
 
 import java.util.ArrayList;
 
@@ -40,8 +46,8 @@ public class AppsGridFragment extends GridFragment implements LoaderManager.Load
         super.onStart();
 
         // Notify service to hide heads up display
-        Intent serviceIntent = new Intent(getActivity().getApplication(), TransientStateHeadsUpService.class);
-        serviceIntent.putExtra(TransientStateHeadsUpService.HIDE_HUD, true);
+        Intent serviceIntent = new Intent(getActivity().getApplication(), TSTUService.class);
+        serviceIntent.putExtra(TSTUService.HIDE_HUD, true);
         getActivity().startService(serviceIntent);
     }
 
@@ -70,8 +76,8 @@ public class AppsGridFragment extends GridFragment implements LoaderManager.Load
     public void onGridItemClick(GridView g, View v, int position, long id) {
         AppModel app = (AppModel) getGridAdapter().getItem(position);
         if (app != null) {
-            HomeScreen homeScreen = (HomeScreen)getActivity();
-            homeScreen.startApplication(app.getApplicationPackageName());
+            HomeScreenActivity homeScreenActivity = (HomeScreenActivity)getActivity();
+            homeScreenActivity.startApplication(app.getApplicationPackageName());
         }
     }
 
