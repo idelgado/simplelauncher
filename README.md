@@ -4,7 +4,7 @@ This launcher application provides a simple repeatable way of testing for transi
 
 ## Play Store
 
-Try it at https://play.google.com/store/apps/details?id=org.idelgado.tstu
+https://play.google.com/store/apps/details?id=org.idelgado.tstu
 
 ## How-To
 
