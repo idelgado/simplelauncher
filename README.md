@@ -2,6 +2,10 @@
 
 This launcher application provides a simple repeatable way of testing for transient state bugs in your Android app.
 
+## Play Store
+
+Try it at https://play.google.com/store/apps/details?id=org.idelgado.tstu
+
 ## How-To
 
 TODO: Add screenshots of sample app
